@@ -1,0 +1,12 @@
+<snippet>
+  <content><![CDATA[
+enum ${1:Name} {
+    ${2:Variant} {
+        ${3:field}: ${4:u64},
+    },
+}
+]]></content>
+  <tabTrigger>enumstruct</tabTrigger>
+  <scope>source.lumos</scope>
+  <description>LUMOS enum with struct variant</description>
+</snippet>

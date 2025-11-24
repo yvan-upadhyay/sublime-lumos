@@ -1,0 +1,60 @@
+{
+  // LSP-lumos settings for LUMOS Language Server Protocol integration
+  // Requires: LSP package (install via Package Control)
+  // Requires: lumos-lsp server (cargo install lumos-lsp)
+
+  "clients": {
+    "lumos-lsp": {
+      // Enable the LUMOS LSP client
+      "enabled": true,
+
+      // Command to start the LSP server
+      "command": ["lumos-lsp"],
+
+      // Selector for LUMOS files
+      "selector": "source.lumos",
+
+      // File extensions to activate on
+      "schemes": ["file"],
+
+      // Language ID to send to server
+      "languageId": "lumos",
+
+      // Enable diagnostics (error checking)
+      "diagnostics": {
+        "enabled": true
+      },
+
+      // Completion settings
+      "completion": {
+        "enabled": true
+      },
+
+      // Hover documentation
+      "hover": {
+        "enabled": true
+      },
+
+      // Code actions
+      "codeActions": {
+        "enabled": true
+      },
+
+      // Document symbols (outline view)
+      "documentSymbols": {
+        "enabled": true
+      },
+
+      // Formatting
+      "formatting": {
+        "enabled": false  // Not yet implemented in lumos-lsp
+      },
+
+      // Initialization options (can be customized)
+      "initializationOptions": {},
+
+      // Environment variables for the LSP server
+      "env": {}
+    }
+  }
+}

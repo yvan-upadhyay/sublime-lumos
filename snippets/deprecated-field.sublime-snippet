@@ -1,0 +1,9 @@
+<snippet>
+  <content><![CDATA[
+#[deprecated("${1:Use new_field instead}")]
+${2:old_field}: ${3:String},
+]]></content>
+  <tabTrigger>deprecated</tabTrigger>
+  <scope>source.lumos</scope>
+  <description>LUMOS deprecated field with message</description>
+</snippet>

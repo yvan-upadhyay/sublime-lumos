@@ -1,0 +1,12 @@
+<snippet>
+  <content><![CDATA[
+enum ${1:Name} {
+    ${2:Variant1},
+    ${3:Variant2},
+    ${4:Variant3},
+}
+]]></content>
+  <tabTrigger>enum</tabTrigger>
+  <scope>source.lumos</scope>
+  <description>LUMOS enum with unit variants</description>
+</snippet>

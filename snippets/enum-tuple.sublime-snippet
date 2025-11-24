@@ -1,0 +1,10 @@
+<snippet>
+  <content><![CDATA[
+enum ${1:Name} {
+    ${2:Variant}(${3:u64}, ${4:String}),
+}
+]]></content>
+  <tabTrigger>enumtuple</tabTrigger>
+  <scope>source.lumos</scope>
+  <description>LUMOS enum with tuple variant</description>
+</snippet>

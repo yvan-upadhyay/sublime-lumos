@@ -1,0 +1,120 @@
+%YAML 1.2
+---
+# Sublime Text syntax definition for LUMOS schema language
+# See http://www.sublimetext.com/docs/syntax.html
+name: LUMOS
+file_extensions:
+  - lumos
+scope: source.lumos
+
+contexts:
+  main:
+    - include: comments
+    - include: attributes
+    - include: keywords
+    - include: types
+    - include: strings
+    - include: numbers
+    - include: operators
+    - include: punctuation
+
+  comments:
+    # Line comments
+    - match: //.*$
+      scope: comment.line.double-slash.lumos
+    # Block comments
+    - match: /\*
+      scope: punctuation.definition.comment.begin.lumos
+      push:
+        - meta_scope: comment.block.lumos
+        - match: \*/
+          scope: punctuation.definition.comment.end.lumos
+          pop: true
+
+  attributes:
+    # Attributes like #[solana], #[account], #[version = "1.0.0"]
+    - match: '#\['
+      scope: punctuation.definition.attribute.begin.lumos
+      push:
+        - meta_scope: meta.attribute.lumos
+        - match: '\]'
+          scope: punctuation.definition.attribute.end.lumos
+          pop: true
+        - match: '\b(solana|account|key|max|version|deprecated)\b'
+          scope: entity.name.function.attribute.lumos
+        - match: '='
+          scope: keyword.operator.assignment.lumos
+        - include: strings
+        - include: numbers
+        - match: '[(),]'
+          scope: punctuation.separator.attribute.lumos
+
+  keywords:
+    # Control keywords
+    - match: '\b(struct|enum|use|pub|type|const)\b'
+      scope: keyword.control.lumos
+    # Storage modifiers
+    - match: '\b(pub|mut)\b'
+      scope: storage.modifier.lumos
+
+  types:
+    # Primitive types
+    - match: '\b(u8|u16|u32|u64|u128|i8|i16|i32|i64|i128|f32|f64|bool|String)\b'
+      scope: entity.name.type.primitive.lumos
+    # Solana types
+    - match: '\b(PublicKey|Pubkey|Signature|Keypair)\b'
+      scope: entity.name.type.solana.lumos
+    # Option and Vec types
+    - match: '\b(Option|Vec)\b'
+      scope: entity.name.type.option.lumos
+    # User-defined types (PascalCase)
+    - match: '\b[A-Z][A-Za-z0-9_]*\b'
+      scope: entity.name.type.lumos
+
+  strings:
+    # Double-quoted strings
+    - match: '"'
+      scope: punctuation.definition.string.begin.lumos
+      push:
+        - meta_scope: string.quoted.double.lumos
+        - match: '"'
+          scope: punctuation.definition.string.end.lumos
+          pop: true
+        - match: '\\.'
+          scope: constant.character.escape.lumos
+
+  numbers:
+    # Hexadecimal
+    - match: '\b0x[0-9a-fA-F_]+\b'
+      scope: constant.numeric.hex.lumos
+    # Binary
+    - match: '\b0b[01_]+\b'
+      scope: constant.numeric.binary.lumos
+    # Octal
+    - match: '\b0o[0-7_]+\b'
+      scope: constant.numeric.octal.lumos
+    # Decimal (including floats)
+    - match: '\b[0-9][0-9_]*(?:\.[0-9][0-9_]*)?(?:[eE][+-]?[0-9_]+)?\b'
+      scope: constant.numeric.decimal.lumos
+
+  operators:
+    # Various operators
+    - match: '->|=>|::|<|>|\+'
+      scope: keyword.operator.lumos
+
+  punctuation:
+    # Separators
+    - match: '[,;]'
+      scope: punctuation.separator.lumos
+    # Curly braces
+    - match: '[{}]'
+      scope: punctuation.brackets.curly.lumos
+    # Parentheses
+    - match: '[()]'
+      scope: punctuation.brackets.round.lumos
+    # Square brackets
+    - match: '[\[\]]'
+      scope: punctuation.brackets.square.lumos
+    # Colon
+    - match: ':'
+      scope: punctuation.colon.lumos
