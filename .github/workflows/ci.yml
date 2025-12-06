@@ -1,0 +1,195 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  validate:
+    name: Validate Syntax and Package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install validation tools
+        run: |
+          pip install pyyaml
+          pip install xmltodict
+          pip install jsonc-parser
+
+      - name: Validate YAML syntax files
+        run: |
+          echo "Validating YAML syntax files..."
+          python -c "
+          import yaml
+          import sys
+
+          try:
+              with open('LUMOS.sublime-syntax', 'r') as f:
+                  yaml.safe_load(f)
+              print('✓ LUMOS.sublime-syntax is valid YAML')
+          except yaml.YAMLError as e:
+              print(f'✗ LUMOS.sublime-syntax has YAML errors: {e}')
+              sys.exit(1)
+          except Exception as e:
+              print(f'✗ Error reading LUMOS.sublime-syntax: {e}')
+              sys.exit(1)
+          "
+
+      - name: Validate JSON settings files (with comments support)
+        run: |
+          echo "Validating JSON settings files (JSONC format)..."
+          python -c "
+          from jsonc_parser.parser import JsoncParser
+          import sys
+
+          files = ['LUMOS.sublime-settings', 'LSP-lumos.sublime-settings']
+          errors = []
+
+          for file in files:
+              try:
+                  with open(file, 'r') as f:
+                      content = f.read()
+                  # Parse JSONC (JSON with comments)
+                  JsoncParser.parse_str(content)
+                  print(f'✓ {file} is valid JSONC')
+              except Exception as e:
+                  errors.append(f'{file}: {e}')
+
+          if errors:
+              print('\nJSON validation errors:')
+              for error in errors:
+                  print(f'✗ {error}')
+              sys.exit(1)
+          "
+
+      - name: Validate XML snippet files
+        run: |
+          echo "Validating XML snippet files..."
+          python -c "
+          import xml.etree.ElementTree as ET
+          import sys
+          import os
+
+          snippet_dir = 'snippets'
+          errors = []
+
+          for filename in os.listdir(snippet_dir):
+              if filename.endswith('.sublime-snippet'):
+                  filepath = os.path.join(snippet_dir, filename)
+                  try:
+                      tree = ET.parse(filepath)
+                      root = tree.getroot()
+
+                      # Check for required elements
+                      if root.tag != 'snippet':
+                          errors.append(f'{filename}: Root element must be <snippet>')
+
+                      content = root.find('content')
+                      tab_trigger = root.find('tabTrigger')
+                      scope = root.find('scope')
+
+                      if content is None:
+                          errors.append(f'{filename}: Missing <content> element')
+                      if tab_trigger is None:
+                          errors.append(f'{filename}: Missing <tabTrigger> element')
+                      if scope is None:
+                          errors.append(f'{filename}: Missing <scope> element')
+                      elif scope.text != 'source.lumos':
+                          errors.append(f'{filename}: Scope should be \"source.lumos\", got \"{scope.text}\"')
+
+                      print(f'✓ {filename} is valid')
+
+                  except ET.ParseError as e:
+                      errors.append(f'{filename}: XML parse error - {e}')
+                  except Exception as e:
+                      errors.append(f'{filename}: Error - {e}')
+
+          if errors:
+              print('\nErrors found:')
+              for error in errors:
+                  print(f'✗ {error}')
+              sys.exit(1)
+          else:
+              print(f'\n✓ All {len(os.listdir(snippet_dir))} snippet files are valid')
+          "
+
+      - name: Validate package structure
+        run: |
+          echo "Validating package structure..."
+          python -c "
+          import os
+          import sys
+
+          required_files = [
+              'LUMOS.sublime-syntax',
+              'LUMOS.sublime-settings',
+              'LSP-lumos.sublime-settings',
+              'README.md',
+              'LICENSE-MIT',
+              'LICENSE-APACHE'
+          ]
+
+          required_dirs = [
+              'snippets'
+          ]
+
+          errors = []
+
+          # Check required files
+          for file in required_files:
+              if not os.path.isfile(file):
+                  errors.append(f'Missing required file: {file}')
+              else:
+                  print(f'✓ Found {file}')
+
+          # Check required directories
+          for dir in required_dirs:
+              if not os.path.isdir(dir):
+                  errors.append(f'Missing required directory: {dir}')
+              else:
+                  snippet_count = len([f for f in os.listdir(dir) if f.endswith('.sublime-snippet')])
+                  print(f'✓ Found {dir}/ with {snippet_count} snippets')
+
+          # Verify syntax file has correct name and scope
+          if os.path.isfile('LUMOS.sublime-syntax'):
+              import yaml
+              with open('LUMOS.sublime-syntax', 'r') as f:
+                  syntax = yaml.safe_load(f)
+                  if syntax.get('name') != 'LUMOS':
+                      errors.append('LUMOS.sublime-syntax: name should be \"LUMOS\"')
+                  if syntax.get('scope') != 'source.lumos':
+                      errors.append('LUMOS.sublime-syntax: scope should be \"source.lumos\"')
+                  if 'lumos' not in syntax.get('file_extensions', []):
+                      errors.append('LUMOS.sublime-syntax: missing \"lumos\" in file_extensions')
+
+          if errors:
+              print('\nPackage structure errors:')
+              for error in errors:
+                  print(f'✗ {error}')
+              sys.exit(1)
+          else:
+              print('\n✓ Package structure is valid')
+          "
+
+      - name: Summary
+        if: success()
+        run: |
+          echo ""
+          echo "=========================================="
+          echo "✓ All validation checks passed!"
+          echo "=========================================="
+          echo "- YAML syntax files: valid"
+          echo "- JSON settings files: valid"
+          echo "- XML snippet files: valid"
+          echo "- Package structure: valid"
+          echo "=========================================="
